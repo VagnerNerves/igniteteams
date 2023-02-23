@@ -6,6 +6,9 @@ export declare global {
       players: {
         group: string
       }
+      newteam: {
+        group: string
+      }
     }
   }
 }
