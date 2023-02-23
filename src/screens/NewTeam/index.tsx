@@ -30,7 +30,7 @@ export function NewTeam() {
         return Alert.alert('Novo Time', 'Informe o nome do time.')
       }
 
-      await teamAddByGroup(group, team)
+      await teamAddByGroup(group, team.trim().toUpperCase())
 
       console.log(await teamGetByGroup(group))
 
@@ -57,7 +57,12 @@ export function NewTeam() {
           subtitle="crie um time para adicionar as pessoas"
         />
 
-        <Input placeholder="Nome do Time" onChangeText={setTeam} />
+        <Input
+          placeholder="Nome do Time"
+          value={team}
+          onChangeText={text => setTeam(text.toUpperCase())}
+          autoCapitalize="characters"
+        />
 
         <Button title="Criar" style={{ marginTop: 20 }} onPress={handleNew} />
       </Content>
