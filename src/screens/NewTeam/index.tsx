@@ -32,8 +32,6 @@ export function NewTeam() {
 
       await teamAddByGroup(group, team.trim().toUpperCase())
 
-      console.log(await teamGetByGroup(group))
-
       navigation.goBack()
     } catch (error) {
       if (error instanceof AppError) {
