@@ -44,5 +44,10 @@ export const ContainerCenter = styled.View`
 
   align-items: center;
 
+  margin-top: 12px;
   margin-bottom: 12px;
+`
+
+export const ContainerFlex1 = styled.View`
+  flex: 1;
 `

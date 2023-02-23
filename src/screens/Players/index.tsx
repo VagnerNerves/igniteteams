@@ -29,6 +29,7 @@ import { Loading } from '@components/Loading'
 import {
   Container,
   ContainerCenter,
+  ContainerFlex1,
   Form,
   HeaderList,
   NumberOfPlayers
@@ -207,7 +208,13 @@ export function Players() {
       ) : (
         <>
           {teams.length === 0 ? (
-            <Button title="Criar Time" type="PRIMARY" onPress={handleNewTeam} />
+            <ContainerFlex1>
+              <Button
+                title="Criar Time"
+                type="PRIMARY"
+                onPress={handleNewTeam}
+              />
+            </ContainerFlex1>
           ) : (
             <>
               <Form>
@@ -273,16 +280,15 @@ export function Players() {
                   }}
                 />
               </ContainerCenter>
-
-              <Button
-                title="Remover turma"
-                type="SECONDARY"
-                onPress={handleGroupRemove}
-              />
             </>
           )}
         </>
       )}
+      <Button
+        title="Remover turma"
+        type="SECONDARY"
+        onPress={handleGroupRemove}
+      />
     </Container>
   )
 }
