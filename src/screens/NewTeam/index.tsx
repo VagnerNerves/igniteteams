@@ -10,7 +10,7 @@ import { Input } from '@components/Input'
 import { groupCreate } from '@storage/group/groupCreate'
 import { AppError } from '@utils/AppError'
 
-import { Container, Content, Icon } from './styles'
+import { Container, Content, Icon, TitleGroup } from './styles'
 
 type RouteParams = {
   group: string
@@ -43,9 +43,9 @@ export function NewTeam() {
 
   return (
     <Container>
-      <Header showBackButton />
+      <Header showBackButton navigationGoBack />
       <Content>
-        {/* <Hightlight title={group} subtitle="" /> */}
+        <TitleGroup>{group}</TitleGroup>
         <Icon />
 
         <Hightlight
