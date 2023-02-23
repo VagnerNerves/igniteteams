@@ -35,3 +35,14 @@ export const NumberOfPlayers = styled.Text`
     font-size: ${theme.FONT_SIZE.SM}px;
   `}
 `
+
+export const ContainerCenter = styled.View`
+  flex: 1;
+
+  min-height: 56px;
+  max-height: 56px;
+
+  align-items: center;
+
+  margin-bottom: 12px;
+`

@@ -1,6 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Alert, FlatList, TextInput } from 'react-native'
-import { useRoute, useNavigation } from '@react-navigation/native'
+import {
+  useRoute,
+  useNavigation,
+  useFocusEffect
+} from '@react-navigation/native'
 
 import { AppError } from '@utils/AppError'
 
@@ -9,6 +13,8 @@ import { playersGetByGroupAndTeam } from '@storage/player/playesGetByGroupAndTea
 import { PlayerStorageDTO } from '@storage/player/PlayerStorageDTO'
 import { playerRemoveByGroup } from '@storage/player/playerRemoveByGroup'
 import { groupRemoveByName } from '@storage/group/groupRemoveByName'
+import { teamGetByGroup } from '@storage/team/teamGetByGroup'
+import { teamRemoveByGroup } from '@storage/team/teamRemoveByGroup'
 
 import { Header } from '@components/Header'
 import { Hightlight } from '@components/Highlight'
@@ -20,16 +26,24 @@ import { ListEmpty } from '@components/ListEmpty'
 import { Button } from '@components/Button'
 import { Loading } from '@components/Loading'
 
-import { Container, Form, HeaderList, NumberOfPlayers } from './styles'
+import {
+  Container,
+  ContainerCenter,
+  Form,
+  HeaderList,
+  NumberOfPlayers
+} from './styles'
 
 type RouteParams = {
   group: string
 }
 
 export function Players() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoadingTeams, setIsLoadingTeams] = useState(true)
+  const [isLoadingPlayer, setIsLoadingPlayer] = useState(true)
   const [newPlayerName, setNewPlayerName] = useState('')
-  const [team, setTeam] = useState('Time A')
+  const [teamIsSelected, setTeamIsSelected] = useState('')
+  const [teams, setTeams] = useState<string[]>([])
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([])
 
   const navigation = useNavigation()
@@ -48,7 +62,7 @@ export function Players() {
 
     const newPlayer = {
       name: newPlayerName,
-      team
+      team: teamIsSelected
     }
 
     try {
@@ -70,9 +84,12 @@ export function Players() {
 
   async function fetchPlayersByTeam() {
     try {
-      setIsLoading(true)
+      setIsLoadingPlayer(true)
 
-      const playersByTeam = await playersGetByGroupAndTeam(group, team)
+      const playersByTeam = await playersGetByGroupAndTeam(
+        group,
+        teamIsSelected
+      )
 
       setPlayers(playersByTeam)
     } catch (error) {
@@ -82,7 +99,26 @@ export function Players() {
         'Não foi possível carregar as pessoas do time selecionado.'
       )
     } finally {
-      setIsLoading(false)
+      setIsLoadingPlayer(false)
+    }
+  }
+
+  async function fetchTeamsByGroup() {
+    try {
+      setIsLoadingTeams(true)
+
+      const teamsByGroup = await teamGetByGroup(group)
+
+      setTeams(teamsByGroup)
+
+      teamsByGroup.length > 0
+        ? setTeamIsSelected(teamsByGroup[0])
+        : setTeamIsSelected('')
+    } catch (error) {
+      console.log(error)
+      Alert.alert('Times', 'Não foi possível carregar os times.')
+    } finally {
+      setIsLoadingTeams(false)
     }
   }
 
@@ -94,6 +130,30 @@ export function Players() {
       console.log(error)
       Alert.alert('Remover pessoa', 'Não foi possível remover essa pessoa.')
     }
+  }
+
+  async function teamRemove() {
+    try {
+      await teamRemoveByGroup(teamIsSelected, group)
+
+      await fetchTeamsByGroup()
+    } catch (error) {
+      console.log(error)
+      Alert.alert('Remover time', 'Não foi possível remover o time.')
+    }
+  }
+
+  async function handleGroupTeam() {
+    Alert.alert('Remover', `Deseja remover o time ${teamIsSelected} ?`, [
+      {
+        text: 'Não',
+        style: 'cancel'
+      },
+      {
+        text: 'Sim',
+        onPress: () => teamRemove()
+      }
+    ])
   }
 
   async function groupRemove() {
@@ -120,9 +180,19 @@ export function Players() {
     ])
   }
 
+  function handleNewTeam() {
+    navigation.navigate('newteam', { group })
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchTeamsByGroup()
+    }, [])
+  )
+
   useEffect(() => {
     fetchPlayersByTeam()
-  }, [team])
+  }, [teamIsSelected])
 
   return (
     <Container>
@@ -132,64 +202,87 @@ export function Players() {
         title={group}
         subtitle="adicione a galera e separe os times"
       />
-
-      <Form>
-        <Input
-          inputRef={newPlayerNameInputRef}
-          onChangeText={setNewPlayerName}
-          value={newPlayerName}
-          placeholder="Nome da pessoa"
-          autoCorrect={false}
-          onSubmitEditing={handleAddPlayer}
-          returnKeyType="done"
-        />
-        <ButtonIcon onPress={handleAddPlayer} icon="add" />
-      </Form>
-
-      <HeaderList>
-        <FlatList
-          data={['Time A', 'Time B']}
-          keyExtractor={item => item}
-          renderItem={({ item }) => (
-            <Filter
-              title={item}
-              isActive={item === team ? true : false}
-              onPress={() => setTeam(item)}
-            />
-          )}
-          horizontal
-        />
-        <NumberOfPlayers>{players.length}</NumberOfPlayers>
-      </HeaderList>
-
-      {isLoading ? (
+      {isLoadingTeams ? (
         <Loading />
       ) : (
-        <FlatList
-          data={players}
-          keyExtractor={item => item.name}
-          renderItem={({ item }) => (
-            <PlayerCard
-              name={item.name}
-              onRemove={() => handlePlayerRemove(item.name)}
-            />
-          )}
-          ListEmptyComponent={() => (
-            <ListEmpty message="Não há pessoas neste time" />
-          )}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={[
-            { paddingBottom: 100 },
-            players.length === 0 && { flex: 1 }
-          ]}
-        />
-      )}
+        <>
+          {teams.length === 0 ? (
+            <Button title="Criar Time" type="PRIMARY" onPress={handleNewTeam} />
+          ) : (
+            <>
+              <Form>
+                <Input
+                  inputRef={newPlayerNameInputRef}
+                  onChangeText={setNewPlayerName}
+                  value={newPlayerName}
+                  placeholder="Nome da pessoa"
+                  autoCorrect={false}
+                  onSubmitEditing={handleAddPlayer}
+                  returnKeyType="done"
+                />
+                <ButtonIcon onPress={handleAddPlayer} icon="add" />
+              </Form>
 
-      <Button
-        title="Remover turma"
-        type="SECONDARY"
-        onPress={handleGroupRemove}
-      />
+              <HeaderList>
+                <FlatList
+                  data={teams}
+                  keyExtractor={item => item}
+                  renderItem={({ item }) => (
+                    <Filter
+                      title={item}
+                      isActive={item === teamIsSelected ? true : false}
+                      onPress={() => setTeamIsSelected(item)}
+                    />
+                  )}
+                  horizontal
+                />
+                <ButtonIcon onPress={handleNewTeam} icon="add" />
+                <NumberOfPlayers>{players.length}</NumberOfPlayers>
+              </HeaderList>
+
+              {isLoadingPlayer ? (
+                <Loading />
+              ) : (
+                <FlatList
+                  data={players}
+                  keyExtractor={item => item.name}
+                  renderItem={({ item }) => (
+                    <PlayerCard
+                      name={item.name}
+                      onRemove={() => handlePlayerRemove(item.name)}
+                    />
+                  )}
+                  ListEmptyComponent={() => (
+                    <ListEmpty message="Não há pessoas neste time" />
+                  )}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={[
+                    { paddingBottom: 100 },
+                    players.length === 0 && { flex: 1 }
+                  ]}
+                />
+              )}
+
+              <ContainerCenter>
+                <Button
+                  title="Remover Time"
+                  type="SECONDARY"
+                  onPress={handleGroupTeam}
+                  style={{
+                    width: '80%'
+                  }}
+                />
+              </ContainerCenter>
+
+              <Button
+                title="Remover turma"
+                type="SECONDARY"
+                onPress={handleGroupRemove}
+              />
+            </>
+          )}
+        </>
+      )}
     </Container>
   )
 }
