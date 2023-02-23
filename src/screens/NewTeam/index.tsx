@@ -7,10 +7,11 @@ import { Header } from '@components/Header'
 import { Hightlight } from '@components/Highlight'
 import { Input } from '@components/Input'
 
-import { groupCreate } from '@storage/group/groupCreate'
+import { teamAddByGroup } from '@storage/team/teamAddByGroup'
 import { AppError } from '@utils/AppError'
 
 import { Container, Content, Icon, TitleGroup } from './styles'
+import { teamGetByGroup } from '@storage/team/teamGetByGroup'
 
 type RouteParams = {
   group: string
@@ -29,7 +30,10 @@ export function NewTeam() {
         return Alert.alert('Novo Time', 'Informe o nome do time.')
       }
 
-      // await groupCreate(group)
+      await teamAddByGroup(group, team)
+
+      console.log(await teamGetByGroup(group))
+
       navigation.goBack()
     } catch (error) {
       if (error instanceof AppError) {
