@@ -6,13 +6,17 @@ import logoImg from '@assets/logo.png'
 
 type Props = {
   showBackButton?: boolean
+  navigationGoBack?: boolean
 }
 
-export function Header({ showBackButton = false }: Props) {
+export function Header({
+  showBackButton = false,
+  navigationGoBack = false
+}: Props) {
   const navigation = useNavigation()
 
   function handleGoBack() {
-    navigation.navigate('groups')
+    navigationGoBack ? navigation.goBack() : navigation.navigate('groups')
   }
 
   return (
