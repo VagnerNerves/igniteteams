@@ -14,6 +14,7 @@ I developed the Ignite Teams project in React Native, where the creation of clas
 ## 🧭 Table of contents
 
 - [🧭 Table of contents](#-table-of-contents)
+- [🎥 Implementation Video](#-implementation-video)
 - [🎨 Layout](#-layout)
 - [👏 Learning and more Implementations](#-learning-and-more-implementations)
 - [💡 Technologies Used](#-technologies-used)
@@ -25,11 +26,7 @@ I developed the Ignite Teams project in React Native, where the creation of clas
 
 ## 🎥 Implementation Video
 
-
-
 https://user-images.githubusercontent.com/40831841/221297886-8f52b7b5-f79d-4a9a-add9-6d1f41706ede.mp4
-
-
 
 ## 🎨 Layout
 
@@ -39,9 +36,11 @@ Layout developed by [Rodrigo Gonçalves ](https://www.linkedin.com/in/rodrigo-go
 
 ## 👏 Learning and more Implementations
 
-- Implemented theme creation.
-- Implemented the application's routes.
-- Implemented saving data in the cellphone storage.
+- I learned and implemented tweaks in import paths, decreasing the size with aliases configured in Babel and tsConfig.
+- I learned and implemented the creation of a default and configured theme in Styled Components.
+- I learned about how route navigation works in react native navigation and implemented Stack Navigator type routes.
+- I learned how to save local data on the cell phone and implemented the functionalities in the storage folder.
+- I implemented the screen to create teams and configured it to adjust when adding people, being able to exclude the team.
 
 ## 💡 Technologies Used
 
