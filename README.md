@@ -15,6 +15,7 @@ I developed the Ignite Teams project in React Native, where the creation of clas
 
 - [🧭 Table of contents](#-table-of-contents)
 - [🎨 Layout](#-layout)
+- [👏 Learning and more Implementations](#-learning-and-more-implementations)
 - [💡 Technologies Used](#-technologies-used)
 - [📂 Folder Structure](#-folder-structure)
 - [🚀 Running the Project](#-running-the-project)
@@ -32,9 +33,11 @@ Layout developed by [Rodrigo Gonçalves ](https://www.linkedin.com/in/rodrigo-go
 
 [![Layout in Figma](https://github.com/VagnerNerves/default-readme/blob/main/assets/layout-in-figma.svg)](<https://www.figma.com/file/cQr1IePDFPNHAhwLMLAyjq/Ignite-Teams-(Community)?node-id=102%3A375&t=geNzrHzNT2UmxSHM-1>)
 
-<!-- ## 👏 Learning and more Implementations
+## 👏 Learning and more Implementations
 
-Describe what you learned and implemented in the project. -->
+- Implemented theme creation.
+- Implemented the application's routes.
+- Implemented saving data in the cellphone storage.
 
 ## 💡 Technologies Used
 
