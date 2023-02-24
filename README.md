@@ -30,7 +30,7 @@ In the GitHub edit, drag the video that it already puts on github itself. -->
 
 Layout developed by [Rodrigo Gonçalves ](https://www.linkedin.com/in/rodrigo-goncalves-santana/) and [Millena Kupsinskü Martins](https://www.linkedin.com/in/millenakmartins/)
 
-[![Layout in Figma](https://github.com/VagnerNerves/default-readme/blob/main/assets/layout-in-figma.svg)](https://www.figma.com/files)
+[![Layout in Figma](https://github.com/VagnerNerves/default-readme/blob/main/assets/layout-in-figma.svg)](<https://www.figma.com/file/cQr1IePDFPNHAhwLMLAyjq/Ignite-Teams-(Community)?node-id=102%3A375&t=geNzrHzNT2UmxSHM-1>)
 
 <!-- ## 👏 Learning and more Implementations
 
