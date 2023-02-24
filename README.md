@@ -168,8 +168,10 @@ This project is under the MIT license. See the [LICENSE](https://github.com/Vagn
 ## ✒ Author
 
 <p align="center">
-  <img width="200px" alt="Author Vagner Nerves" title="Author Vagner Nerves" src="https://github.com/VagnerNerves/default-readme/blob/main/assets/VagnerNerves.svg" />
-
+  <a href="https://github.com/VagnerNerves">
+    <img width="200px" alt="Author Vagner Nerves" title="Author Vagner Nerves" src="https://github.com/VagnerNerves/default-readme/blob/main/assets/VagnerNerves.svg" />
+  </a>
+  
   <h3 align="center">Vagner Nerves</h3>
 
   <p align="center">
